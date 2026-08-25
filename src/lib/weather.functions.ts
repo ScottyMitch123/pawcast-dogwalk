@@ -10,7 +10,7 @@ export interface ForecastInput {
 }
 
 export const fetchForecast = createServerFn({ method: "POST" })
-  .inputValidator((data: ForecastInput) => data)
+  .validator((data: ForecastInput) => data)
   .handler(async ({ data }): Promise<WeatherForecast> => {
     const url = new URL(OPEN_METEO_URL);
     url.searchParams.set("latitude", String(data.latitude));
