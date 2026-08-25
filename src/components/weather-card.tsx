@@ -1,5 +1,5 @@
 import { CloudRain, Droplets, Thermometer } from "lucide-react";
-import { RatingRing, scoreToColor } from "./rating-ring";
+import { RatingRing, scoreToColor, scoreToRgba } from "./rating-ring";
 import type { DailyWeather } from "@/lib/weather.types";
 
 interface WeatherCardProps {
@@ -11,11 +11,14 @@ export function WeatherCard({ day }: WeatherCardProps) {
 
   return (
     <div
-      className="relative flex flex-col gap-4 rounded-2xl border border-border/50 p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+      className="relative flex flex-col gap-4 overflow-hidden rounded-2xl border p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
       style={{
-        background: `linear-gradient(145deg, color-mix(in srgb, ${cardColor} 12%, var(--card)) 0%, color-mix(in srgb, ${cardColor} 4%, var(--card)) 100%)`,
+        borderColor: scoreToRgba(day.score, 0.35),
+        backgroundImage: `linear-gradient(145deg, ${scoreToRgba(day.score, 0.28)} 0%, ${scoreToRgba(day.score, 0.08)} 100%)`,
+        backgroundColor: "var(--card)",
       }}
     >
+
       <div className="flex items-start justify-between">
         <div>
           <h3 className="text-lg font-semibold text-foreground">{day.dayName}</h3>
