@@ -81,7 +81,7 @@ interface MetricProps {
 
 function Metric({ icon, value, sub, label }: MetricProps) {
   return (
-    <div className="flex flex-col gap-1 rounded-xl bg-background/60 p-2.5 backdrop-blur-sm">
+    <div className="flex flex-col gap-1 rounded-xl bg-card p-2.5 shadow-sm">
       <div className="flex items-center gap-1 text-muted-foreground">
         {icon}
         <span className="text-xs">{label}</span>
