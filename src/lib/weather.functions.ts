@@ -17,7 +17,7 @@ export const fetchForecast = createServerFn({ method: "POST" })
     url.searchParams.set("longitude", String(data.longitude));
     url.searchParams.set(
       "daily",
-      "temperature_2m_max,precipitation_probability_max,relative_humidity_2m_mean"
+      "temperature_2m_max,precipitation_probability_max,relative_humidity_2m_mean,sunrise,sunset"
     );
     url.searchParams.set("timezone", "auto");
     url.searchParams.set("forecast_days", "7");
