@@ -59,11 +59,11 @@ export function WeatherCard({ day }: WeatherCardProps) {
 
         <div className="flex flex-col items-end gap-0.5 text-xs text-muted-foreground">
           <div className="flex items-center gap-1">
-            <Sunrise className="h-3.5 w-3.5" />
+            <Sunrise className="h-3.5 w-3.5 text-amber-500" />
             <span>{day.sunrise}</span>
           </div>
           <div className="flex items-center gap-1">
-            <Sunset className="h-3.5 w-3.5" />
+            <Sunset className="h-3.5 w-3.5 text-indigo-500" />
             <span>{day.sunset}</span>
           </div>
         </div>
