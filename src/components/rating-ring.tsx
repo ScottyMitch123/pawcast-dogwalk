@@ -67,19 +67,3 @@ function interpolateRgb(
     Math.round(a[2] + (b[2] - a[2]) * t),
   ];
 }
-
-
-function interpolateColor(a: string, b: string, t: number): string {
-  const ah = parseInt(a.slice(1, 3), 16);
-  const ag = parseInt(a.slice(3, 5), 16);
-  const ab = parseInt(a.slice(5, 7), 16);
-  const bh = parseInt(b.slice(1, 3), 16);
-  const bg = parseInt(b.slice(3, 5), 16);
-  const bb = parseInt(b.slice(5, 7), 16);
-
-  const rh = Math.round(ah + (bh - ah) * t);
-  const rg = Math.round(ag + (bg - ag) * t);
-  const rb = Math.round(ab + (bb - ab) * t);
-
-  return `rgb(${rh}, ${rg}, ${rb})`;
-}
