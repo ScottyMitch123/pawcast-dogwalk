@@ -1,11 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import { MapPin, Loader2, Dog } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { Dog } from "lucide-react";
 
 import { fetchForecast } from "@/lib/weather.functions";
 import { WeatherCard } from "@/components/weather-card";
+import { LocationPicker } from "@/components/location-picker";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+
 import type { Coordinates } from "@/lib/weather.types";
 
 const DEFAULT_COORDS: Coordinates = { latitude: 40.7128, longitude: -74.006 }; // New York City
@@ -44,30 +46,36 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const [coords, setCoords] = useState<Coordinates>(DEFAULT_COORDS);
-  const [locationStatus, setLocationStatus] = useState<string>("Using default location");
+  const [locationLabel, setLocationLabel] = useState<string>("New York, NY");
   const [isLocating, setIsLocating] = useState(false);
   const [unit, setUnit] = useState<"imperial" | "metric">("imperial");
 
-  useEffect(() => {
-    if ("geolocation" in navigator) {
-      setIsLocating(true);
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setCoords({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
-          setLocationStatus("Using your location");
-          setIsLocating(false);
-        },
-        () => {
-          setLocationStatus("Location unavailable — using default");
-          setIsLocating(false);
-        },
-        { timeout: 8000 }
-      );
+  const requestCurrentLocation = useCallback(() => {
+    if (!("geolocation" in navigator)) {
+      setLocationLabel("New York, NY");
+      return;
     }
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setCoords({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+        setLocationLabel("Current location");
+        setIsLocating(false);
+      },
+      () => {
+        setLocationLabel("New York, NY (location unavailable)");
+        setIsLocating(false);
+      },
+      { timeout: 8000 }
+    );
   }, []);
+
+  useEffect(() => {
+    requestCurrentLocation();
+  }, [requestCurrentLocation]);
 
   const { data: forecast } = useSuspenseQuery(forecastQueryOptions(coords));
 
@@ -86,14 +94,16 @@ function Index() {
             maybe a quick potty break.
           </p>
           <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-sm text-muted-foreground">
-              {isLocating ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <MapPin className="h-4 w-4" />
-              )}
-              <span>{locationStatus}</span>
-            </div>
+            <LocationPicker
+              label={locationLabel}
+              isLocating={isLocating}
+              onSelect={(location) => {
+                setCoords({ latitude: location.latitude, longitude: location.longitude });
+                setLocationLabel(location.label);
+              }}
+              onUseCurrent={requestCurrentLocation}
+            />
+
             <ToggleGroup
               type="single"
               value={unit}
