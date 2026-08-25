@@ -4,9 +4,10 @@ import type { DailyWeather } from "@/lib/weather.types";
 
 interface WeatherCardProps {
   day: DailyWeather;
+  unit: "imperial" | "metric";
 }
 
-export function WeatherCard({ day }: WeatherCardProps) {
+export function WeatherCard({ day, unit }: WeatherCardProps) {
   const cardColor = scoreToColor(day.score);
 
   return (
@@ -30,8 +31,7 @@ export function WeatherCard({ day }: WeatherCardProps) {
       <div className="grid grid-cols-3 gap-2 text-sm">
         <Metric
           icon={<Thermometer className="h-4 w-4 text-orange-500" />}
-          value={`${day.tempMaxF}°F`}
-          sub={`${day.tempMaxC}°C`}
+          value={unit === "imperial" ? `${day.tempMaxF}°F` : `${day.tempMaxC}°C`}
           label="High"
         />
         <Metric
@@ -59,11 +59,11 @@ export function WeatherCard({ day }: WeatherCardProps) {
 
         <div className="flex flex-col items-end gap-0.5 text-xs text-muted-foreground">
           <div className="flex items-center gap-1">
-            <Sunrise className="h-3.5 w-3.5 text-amber-500" />
+            <Sunrise className="h-4 w-4 shrink-0 text-sunrise" strokeWidth={2.5} />
             <span>{day.sunrise}</span>
           </div>
           <div className="flex items-center gap-1">
-            <Sunset className="h-3.5 w-3.5 text-indigo-500" />
+            <Sunset className="h-4 w-4 shrink-0 text-sunset" strokeWidth={2.5} />
             <span>{day.sunset}</span>
           </div>
         </div>
