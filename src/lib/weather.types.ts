@@ -20,3 +20,11 @@ export interface Coordinates {
   latitude: number;
   longitude: number;
 }
+
+export interface LocationResult {
+  id: number;
+  name: string;
+  label: string;
+  latitude: number;
+  longitude: number;
+}
