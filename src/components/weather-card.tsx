@@ -1,0 +1,81 @@
+import { CloudRain, Droplets, Thermometer } from "lucide-react";
+import { RatingRing, scoreToColor } from "./rating-ring";
+import type { DailyWeather } from "@/lib/weather.types";
+
+interface WeatherCardProps {
+  day: DailyWeather;
+}
+
+export function WeatherCard({ day }: WeatherCardProps) {
+  const cardColor = scoreToColor(day.score);
+
+  return (
+    <div
+      className="relative flex flex-col gap-4 rounded-2xl border border-border/50 p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+      style={{
+        background: `linear-gradient(145deg, color-mix(in srgb, ${cardColor} 12%, var(--card)) 0%, color-mix(in srgb, ${cardColor} 4%, var(--card)) 100%)`,
+      }}
+    >
+      <div className="flex items-start justify-between">
+        <div>
+          <h3 className="text-lg font-semibold text-foreground">{day.dayName}</h3>
+          <p className="text-xs text-muted-foreground">{day.date}</p>
+        </div>
+        <RatingRing score={day.score} />
+      </div>
+
+      <div className="grid grid-cols-3 gap-2 text-sm">
+        <Metric
+          icon={<Thermometer className="h-4 w-4" />}
+          value={`${day.tempMaxF}°F`}
+          sub={`${day.tempMaxC}°C`}
+          label="High"
+        />
+        <Metric
+          icon={<CloudRain className="h-4 w-4" />}
+          value={`${day.rainChance}%`}
+          label="Rain"
+        />
+        <Metric
+          icon={<Droplets className="h-4 w-4" />}
+          value={`${day.humidity}%`}
+          label="Humidity"
+        />
+      </div>
+
+      <div className="mt-auto flex items-center gap-2">
+        <span
+          className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium"
+          style={{
+            backgroundColor: `color-mix(in srgb, ${cardColor} 20%, transparent)`,
+            color: cardColor,
+          }}
+        >
+          {day.ratingLabel}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+interface MetricProps {
+  icon: React.ReactNode;
+  value: string;
+  sub?: string;
+  label: string;
+}
+
+function Metric({ icon, value, sub, label }: MetricProps) {
+  return (
+    <div className="flex flex-col gap-1 rounded-xl bg-background/60 p-2.5 backdrop-blur-sm">
+      <div className="flex items-center gap-1 text-muted-foreground">
+        {icon}
+        <span className="text-xs">{label}</span>
+      </div>
+      <div className="font-semibold text-foreground">
+        {value}
+        {sub && <span className="ml-1 text-xs font-normal text-muted-foreground">{sub}</span>}
+      </div>
+    </div>
+  );
+}
