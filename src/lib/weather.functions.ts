@@ -17,7 +17,7 @@ export const fetchForecast = createServerFn({ method: "POST" })
     url.searchParams.set("longitude", String(data.longitude));
     url.searchParams.set(
       "daily",
-      "temperature_2m_max,precipitation_probability_max,relative_humidity_2m_mean"
+      "temperature_2m_max,precipitation_probability_max,relative_humidity_2m_mean,sunrise,sunset"
     );
     url.searchParams.set("timezone", "auto");
     url.searchParams.set("forecast_days", "7");
@@ -36,6 +36,8 @@ export const fetchForecast = createServerFn({ method: "POST" })
       const tempMaxC = fahrenheitToCelsius(tempMaxF);
       const rainChance = daily.precipitation_probability_max[index] ?? 0;
       const humidity = daily.relative_humidity_2m_mean[index] ?? 0;
+      const sunrise = daily.sunrise[index] ?? time;
+      const sunset = daily.sunset[index] ?? time;
       const date = parseISO(time);
       const score = calculateWalkScore(tempMaxC, rainChance, humidity);
 
@@ -46,6 +48,8 @@ export const fetchForecast = createServerFn({ method: "POST" })
         tempMaxF,
         rainChance,
         humidity,
+        sunrise: format(parseISO(sunrise), "h:mm a"),
+        sunset: format(parseISO(sunset), "h:mm a"),
         score,
         ratingLabel: scoreToLabel(score),
       };
@@ -96,5 +100,7 @@ interface OpenMeteoResponse {
     temperature_2m_max: number[];
     precipitation_probability_max: number[];
     relative_humidity_2m_mean: number[];
+    sunrise: string[];
+    sunset: string[];
   };
 }

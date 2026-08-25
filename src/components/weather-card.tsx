@@ -1,4 +1,4 @@
-import { CloudRain, Droplets, Thermometer } from "lucide-react";
+import { CloudRain, Droplets, Sunrise, Sunset, Thermometer } from "lucide-react";
 import { RatingRing, scoreToColor, scoreToRgba } from "./rating-ring";
 import type { DailyWeather } from "@/lib/weather.types";
 
@@ -46,7 +46,7 @@ export function WeatherCard({ day }: WeatherCardProps) {
         />
       </div>
 
-      <div className="mt-auto flex items-center gap-2">
+      <div className="mt-auto flex items-center justify-between gap-2">
         <span
           className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium"
           style={{
@@ -56,6 +56,17 @@ export function WeatherCard({ day }: WeatherCardProps) {
         >
           {day.ratingLabel}
         </span>
+
+        <div className="flex flex-col items-end gap-0.5 text-xs text-muted-foreground">
+          <div className="flex items-center gap-1">
+            <Sunrise className="h-3.5 w-3.5" />
+            <span>{day.sunrise}</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Sunset className="h-3.5 w-3.5" />
+            <span>{day.sunset}</span>
+          </div>
+        </div>
       </div>
     </div>
   );

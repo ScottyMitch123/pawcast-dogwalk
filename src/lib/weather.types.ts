@@ -5,6 +5,8 @@ export interface DailyWeather {
   tempMaxF: number;
   rainChance: number;
   humidity: number;
+  sunrise: string;
+  sunset: string;
   score: number;
   ratingLabel: string;
 }
