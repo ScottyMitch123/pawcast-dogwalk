@@ -29,18 +29,18 @@ export function WeatherCard({ day }: WeatherCardProps) {
 
       <div className="grid grid-cols-3 gap-2 text-sm">
         <Metric
-          icon={<Thermometer className="h-4 w-4" />}
+          icon={<Thermometer className="h-4 w-4 text-orange-500" />}
           value={`${day.tempMaxF}°F`}
           sub={`${day.tempMaxC}°C`}
           label="High"
         />
         <Metric
-          icon={<CloudRain className="h-4 w-4" />}
+          icon={<CloudRain className="h-4 w-4 text-blue-500" />}
           value={`${day.rainChance}%`}
           label="Rain"
         />
         <Metric
-          icon={<Droplets className="h-4 w-4" />}
+          icon={<Droplets className="h-4 w-4 text-cyan-500" />}
           value={`${day.humidity}%`}
           label="Humidity"
         />
