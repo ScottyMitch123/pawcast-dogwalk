@@ -40,15 +40,34 @@ export function RatingRing({ score, size = 72, strokeWidth = 8 }: RatingRingProp
   );
 }
 
-export function scoreToColor(score: number): string {
-  // Red (0) -> Yellow (50) -> Green (100)
-  if (score <= 50) {
-    const t = score / 50;
-    return interpolateColor("#ef4444", "#eab308", t);
-  }
-  const t = (score - 50) / 50;
-  return interpolateColor("#eab308", "#22c55e", t);
+export function scoreToRgb(score: number): [number, number, number] {
+  const s = Math.min(100, Math.max(0, score));
+  if (s <= 50) return interpolateRgb([239, 68, 68], [234, 179, 8], s / 50);
+  return interpolateRgb([234, 179, 8], [34, 197, 94], (s - 50) / 50);
 }
+
+export function scoreToColor(score: number): string {
+  const [r, g, b] = scoreToRgb(score);
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
+export function scoreToRgba(score: number, alpha: number): string {
+  const [r, g, b] = scoreToRgb(score);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+function interpolateRgb(
+  a: [number, number, number],
+  b: [number, number, number],
+  t: number
+): [number, number, number] {
+  return [
+    Math.round(a[0] + (b[0] - a[0]) * t),
+    Math.round(a[1] + (b[1] - a[1]) * t),
+    Math.round(a[2] + (b[2] - a[2]) * t),
+  ];
+}
+
 
 function interpolateColor(a: string, b: string, t: number): string {
   const ah = parseInt(a.slice(1, 3), 16);

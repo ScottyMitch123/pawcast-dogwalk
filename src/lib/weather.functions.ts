@@ -62,14 +62,16 @@ function fahrenheitToCelsius(f: number): number {
 }
 
 function calculateWalkScore(tempC: number, rainChance: number, humidity: number): number {
-  // Ideal walking temperature is around 15-22°C. Penalize deviation.
-  const tempScore = Math.max(0, 100 - Math.pow(Math.max(0, Math.abs(tempC - 18.5) - 3.5), 2) * 2.5);
+  // Comfortable walking band: 10-24°C. Gentle linear penalty outside it.
+  const tooCold = Math.max(0, 10 - tempC);
+  const tooHot = Math.max(0, tempC - 24);
+  const tempScore = Math.max(0, 100 - tooCold * 2.5 - tooHot * 3);
 
   // Lower rain chance is better.
   const rainScore = 100 - rainChance;
 
-  // Humidity: 40-60% is ideal. Penalize high humidity more than low.
-  const humidityPenalty = humidity > 60 ? (humidity - 60) * 1.5 : Math.max(0, (40 - humidity) * 0.5);
+  // Humidity: 30-60% is ideal. High humidity matters more than low.
+  const humidityPenalty = humidity > 60 ? (humidity - 60) * 1 : Math.max(0, (30 - humidity) * 0.5);
   const humidityScore = Math.max(0, 100 - humidityPenalty);
 
   const weights = { temp: 0.45, rain: 0.35, humidity: 0.2 };
@@ -77,6 +79,7 @@ function calculateWalkScore(tempC: number, rainChance: number, humidity: number)
 
   return Math.min(100, Math.max(0, Math.round(raw)));
 }
+
 
 function scoreToLabel(score: number): string {
   if (score >= 90) return "Perfect";
