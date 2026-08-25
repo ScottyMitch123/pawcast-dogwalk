@@ -1,14 +1,16 @@
-# Welcome to your Lovable project
+# Sunny Strolls
+
+I want to build a dog walking app that checks the weather for the next 7 days. It will create a rating based on temperature, chance of rain, and humidity. It will display each day as a card giving the temp, rain chance, humidity, and the quality rating of that day using a ring. ALso, the color of the card will go from red (worst rating) to green (best rating) with a gradient of color in between.
 
 This project was built with [Lovable](https://lovable.dev).
 
 ## Build with Lovable
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/b7cb5b57-aa70-4d62-a1cb-89b3a20ea43f).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
@@ -20,10 +22,3 @@ cd <repository-name>
 npm i
 npm run dev
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
